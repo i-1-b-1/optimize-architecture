@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Palette, Type, Sparkles, Check, Eye, Zap } from 'lucide-react';
+import { X, Palette, Type, Sparkles, Check, Eye, Zap, Brush, Droplet } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { themeRegistry, ThemeDefinition } from '../core/ThemeRegistry';
 import { optimizedStorage } from '../core/OptimizedStorage';
 import { useProject } from '../contexts/ProjectContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ThemeCustomizerProps {
   onClose: () => void;
@@ -13,43 +14,59 @@ interface ThemeCustomizerProps {
 const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
   const { t } = useTranslation();
   const { currentProject, updateProject } = useProject();
-  const [currentTheme, setCurrentTheme] = useState<ThemeDefinition | null>(
-    currentProject ? themeRegistry.getTheme(currentProject.themeId) : optimizedStorage.getSelectedTheme()
-  );
-  const [availableThemes] = useState<ThemeDefinition[]>(themeRegistry.getAllThemes());
+  const { currentTheme, availableThemes, availableFonts, updateTheme, updateFonts } = useTheme();
   const [activeTab, setActiveTab] = useState<'colors' | 'fonts'>('colors');
+  const [selectedColorTheme, setSelectedColorTheme] = useState(currentTheme?.id || 'modern-blue');
+  const [selectedFontCollection, setSelectedFontCollection] = useState('modern-clean');
 
   const tabs = [
     { id: 'colors', label: t('themeCustomizer.colors'), icon: Palette },
     { id: 'fonts', label: t('themeCustomizer.fonts'), icon: Type },
   ];
 
-  const handleThemeSelect = (themeId: string) => {
-    const theme = themeRegistry.getTheme(themeId);
-    if (theme) {
-      setCurrentTheme(theme);
-      
-      // Update current project's theme
-      if (currentProject) {
-        updateProject(currentProject.id, { themeId });
-      }
-      
-      // Also save as default theme
-      optimizedStorage.setSelectedTheme(themeId);
-      
-      // Apply theme CSS variables
-      const css = themeRegistry.generateCSS(themeId);
-      const styleElement = document.getElementById('dynamic-theme-styles') || document.createElement('style');
-      styleElement.id = 'dynamic-theme-styles';
-      styleElement.textContent = css;
-      if (!document.getElementById('dynamic-theme-styles')) {
-        document.head.appendChild(styleElement);
-      }
+  const handleColorThemeSelect = (themeId: string) => {
+    console.log('🎨 Selecting color theme:', themeId);
+    setSelectedColorTheme(themeId);
+    
+    // Apply the color theme immediately
+    updateTheme(themeId);
+    
+    // Update current project's theme if we're in a project
+    if (currentProject) {
+      updateProject(currentProject.id, { themeId });
     }
+    
+    // Save as default theme
+    optimizedStorage.setSelectedTheme(themeId);
+  };
+
+  const handleFontSelect = (fontCollectionId: string) => {
+    console.log('🔤 Selecting font collection:', fontCollectionId);
+    setSelectedFontCollection(fontCollectionId);
+    
+    // Apply the font collection
+    updateFonts(fontCollectionId);
   };
 
   const getThemesByCategory = (category: string) => {
-    return themeRegistry.getThemesByCategory(category);
+    return availableThemes.filter(theme => {
+      // Simple categorization based on theme name/colors
+      const name = theme.name.toLowerCase();
+      switch (category) {
+        case 'modern':
+          return name.includes('modern') || name.includes('ocean') || name.includes('blue');
+        case 'elegant':
+          return name.includes('elegant') || name.includes('dark') || name.includes('midnight');
+        case 'minimal':
+          return name.includes('minimal') || name.includes('slate') || name.includes('professional');
+        case 'bold':
+          return name.includes('vibrant') || name.includes('purple') || name.includes('crimson') || name.includes('sunset');
+        case 'classic':
+          return name.includes('classic') || name.includes('traditional') || name.includes('rose') || name.includes('royal');
+        default:
+          return true;
+      }
+    });
   };
 
   return (
@@ -120,16 +137,20 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                     </div>
                   </div>
                   
-                  {/* Theme Categories */}
+                  {/* Color Theme Categories */}
                   {['modern', 'elegant', 'minimal', 'bold', 'classic'].map(category => {
                     const categoryThemes = getThemesByCategory(category);
                     if (categoryThemes.length === 0) return null;
                     
                     return (
-                      <div key={category} className="mb-6">
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3 capitalize font-display">
-                          {category} Themes
-                        </h4>
+                      <div key={category} className="mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Droplet className="w-4 h-4 text-primary-600" />
+                          <h4 className="text-sm font-semibold text-gray-700 capitalize font-display">
+                            {category} Color Themes
+                          </h4>
+                          <div className="flex-1 h-px bg-gray-200"></div>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                           {categoryThemes.map((theme) => (
                             <motion.div
@@ -137,15 +158,15 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               className={`relative p-3 sm:p-4 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-elegant ${
-                                currentTheme?.id === theme.id
+                                selectedColorTheme === theme.id
                                   ? 'border-primary-500 bg-primary-50 shadow-glow ring-2 ring-primary-300 scale-105'
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
-                              onClick={() => handleThemeSelect(theme.id)}
-                              whileHover={{ scale: currentTheme?.id === theme.id ? 1.05 : 1.02 }}
+                              onClick={() => handleColorThemeSelect(theme.id)}
+                              whileHover={{ scale: selectedColorTheme === theme.id ? 1.05 : 1.02 }}
                               whileTap={{ scale: 0.98 }}
                             >
-                              {currentTheme?.id === theme.id && (
+                              {selectedColorTheme === theme.id && (
                                 <motion.div
                                   initial={{ scale: 0, opacity: 0 }}
                                   animate={{ scale: 1, opacity: 1 }}
@@ -181,7 +202,7 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                                 ></div>
                               </div>
 
-                              {/* Sample Text */}
+                              {/* Sample Text Preview */}
                               <div className="space-y-1">
                                 <div
                                   className="h-2 sm:h-3 rounded"
@@ -197,16 +218,11 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                                 ></div>
                               </div>
 
-                              {/* Theme Info */}
+                              {/* Color Values */}
                               <div className="mt-2 sm:mt-3 flex flex-wrap gap-1">
                                 <span className="text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-600 rounded font-sans">
-                                  {theme.fonts.primary}
+                                  {theme.colors.primary}
                                 </span>
-                                {theme.isPremium && (
-                                  <span className="text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 bg-yellow-100 text-yellow-600 rounded font-sans">
-                                    Premium
-                                  </span>
-                                )}
                               </div>
                             </motion.div>
                           ))}
@@ -220,7 +236,7 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
               {activeTab === 'fonts' && (
                 <div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-2">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 font-display">Font Combinations</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 font-display">Font Collections</h3>
                     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-sans">
                       <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
                       <span>Google Fonts</span>
@@ -228,20 +244,20 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                   </div>
                   
                   <div className="space-y-4">
-                    {availableThemes.map((theme) => (
+                    {availableFonts.map((fontCollection) => (
                       <motion.div
-                        key={theme.id}
+                        key={fontCollection.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`relative p-4 sm:p-6 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-elegant ${currentTheme?.id === theme.id
+                        className={`relative p-4 sm:p-6 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-elegant ${selectedFontCollection === fontCollection.id
                             ? 'border-primary-500 bg-primary-50 shadow-glow ring-2 ring-primary-300'
                             : 'border-gray-200 hover:border-gray-300'
                           }`}
-                        onClick={() => handleThemeSelect(theme.id)}
+                        onClick={() => handleFontSelect(fontCollection.id)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        {currentTheme?.id === theme.id && (
+                        {selectedFontCollection === fontCollection.id && (
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -252,34 +268,37 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                         )}
 
                         <div className="mb-3 sm:mb-4">
-                          <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1 font-display">{theme.name}</h4>
-                          <p className="text-sm text-gray-600 font-sans">Font combination preview</p>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Type className="w-4 h-4 text-primary-600" />
+                            <h4 className="text-lg sm:text-xl font-semibold text-gray-900 font-display">{fontCollection.name}</h4>
+                          </div>
+                          <p className="text-sm text-gray-600 font-sans">{fontCollection.description}</p>
                         </div>
 
                         {/* Font Preview */}
                         <div className="space-y-2 sm:space-y-3">
-                          <div style={{ fontFamily: theme.fonts.primary }}>
+                          <div style={{ fontFamily: fontCollection.fonts.primary }}>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                               <span className="text-xs font-medium text-primary-600 bg-primary-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-sans">PRIMARY</span>
-                              <span className="text-xs text-gray-500 font-sans">{theme.fonts.primary}</span>
+                              <span className="text-xs text-gray-500 font-sans">{fontCollection.fonts.primary}</span>
                             </div>
                             <div className="text-lg sm:text-xl font-bold text-gray-900">The quick brown fox</div>
                           </div>
 
-                          <div style={{ fontFamily: theme.fonts.secondary }}>
+                          <div style={{ fontFamily: fontCollection.fonts.secondary }}>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                               <span className="text-xs font-medium text-secondary-600 bg-secondary-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-sans">SECONDARY</span>
-                              <span className="text-xs text-gray-500 font-sans">{theme.fonts.secondary}</span>
+                              <span className="text-xs text-gray-500 font-sans">{fontCollection.fonts.secondary}</span>
                             </div>
                             <div className="text-sm sm:text-base text-gray-700">jumps over the lazy dog</div>
                           </div>
 
-                          <div style={{ fontFamily: theme.fonts.accent }}>
+                          <div style={{ fontFamily: fontCollection.fonts.accent }}>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                               <span className="text-xs font-medium text-green-600 bg-green-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-sans">ACCENT</span>
-                              <span className="text-xs text-gray-500 font-sans">{theme.fonts.accent}</span>
+                              <span className="text-xs text-gray-500 font-sans">{fontCollection.fonts.accent}</span>
                             </div>
-                            <div className="text-xs sm:text-sm text-gray-600 italic">1234567890</div>
+                            <div className="text-xs sm:text-sm text-gray-600 italic">1234567890 !@#$%</div>
                           </div>
                         </div>
                       </motion.div>

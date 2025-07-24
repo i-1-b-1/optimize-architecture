@@ -22,7 +22,7 @@ interface FontCollection {
   description: string;
 }
 
-// Expanded Color Collections
+// Expanded Color Collections with more themes
 const colorCollections: ThemeConfig[] = [
   {
     id: 'modern-blue',
@@ -272,6 +272,223 @@ const colorCollections: ThemeConfig[] = [
       xl: '0 16px 64px rgba(16, 185, 129, 0.25)',
     },
   },
+  {
+    id: 'crimson-red',
+    name: 'Crimson Fire',
+    colors: {
+      primary: '#dc2626',
+      secondary: '#991b1b',
+      accent: '#f59e0b',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#fee2e2',
+      primary200: '#fecaca',
+      primary300: '#fca5a5',
+      secondary100: '#fef2f2',
+      secondary200: '#fee2e2',
+      accent100: '#fffbeb',
+      accent200: '#fef3c7',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(220, 38, 38, 0.1)',
+      md: '0 4px 16px rgba(220, 38, 38, 0.15)',
+      lg: '0 8px 32px rgba(220, 38, 38, 0.2)',
+      xl: '0 16px 64px rgba(220, 38, 38, 0.25)',
+    },
+  },
+  {
+    id: 'golden-yellow',
+    name: 'Golden Sun',
+    colors: {
+      primary: '#f59e0b',
+      secondary: '#d97706',
+      accent: '#8b5cf6',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#fffbeb',
+      primary200: '#fef3c7',
+      primary300: '#fde68a',
+      secondary100: '#fff7ed',
+      secondary200: '#ffedd5',
+      accent100: '#f3e8ff',
+      accent200: '#e9d5ff',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(245, 158, 11, 0.1)',
+      md: '0 4px 16px rgba(245, 158, 11, 0.15)',
+      lg: '0 8px 32px rgba(245, 158, 11, 0.2)',
+      xl: '0 16px 64px rgba(245, 158, 11, 0.25)',
+    },
+  },
+  {
+    id: 'teal-cyan',
+    name: 'Teal Ocean',
+    colors: {
+      primary: '#0d9488',
+      secondary: '#06b6d4',
+      accent: '#f59e0b',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#f0fdfa',
+      primary200: '#ccfbf1',
+      primary300: '#99f6e4',
+      secondary100: '#cffafe',
+      secondary200: '#a5f3fc',
+      accent100: '#fffbeb',
+      accent200: '#fef3c7',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(13, 148, 136, 0.1)',
+      md: '0 4px 16px rgba(13, 148, 136, 0.15)',
+      lg: '0 8px 32px rgba(13, 148, 136, 0.2)',
+      xl: '0 16px 64px rgba(13, 148, 136, 0.25)',
+    },
+  },
+  {
+    id: 'indigo-purple',
+    name: 'Indigo Dreams',
+    colors: {
+      primary: '#6366f1',
+      secondary: '#8b5cf6',
+      accent: '#f59e0b',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#eef2ff',
+      primary200: '#e0e7ff',
+      primary300: '#c7d2fe',
+      secondary100: '#f3e8ff',
+      secondary200: '#e9d5ff',
+      accent100: '#fffbeb',
+      accent200: '#fef3c7',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(99, 102, 241, 0.1)',
+      md: '0 4px 16px rgba(99, 102, 241, 0.15)',
+      lg: '0 8px 32px rgba(99, 102, 241, 0.2)',
+      xl: '0 16px 64px rgba(99, 102, 241, 0.25)',
+    },
+  },
+  {
+    id: 'slate-gray',
+    name: 'Slate Professional',
+    colors: {
+      primary: '#475569',
+      secondary: '#64748b',
+      accent: '#0ea5e9',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#f8fafc',
+      primary200: '#f1f5f9',
+      primary300: '#e2e8f0',
+      secondary100: '#f8fafc',
+      secondary200: '#f1f5f9',
+      accent100: '#f0f9ff',
+      accent200: '#e0f2fe',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(71, 85, 105, 0.1)',
+      md: '0 4px 16px rgba(71, 85, 105, 0.15)',
+      lg: '0 8px 32px rgba(71, 85, 105, 0.2)',
+      xl: '0 16px 64px rgba(71, 85, 105, 0.25)',
+    },
+  },
+  {
+    id: 'pink-magenta',
+    name: 'Pink Blossom',
+    colors: {
+      primary: '#ec4899',
+      secondary: '#be185d',
+      accent: '#8b5cf6',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#fdf2f8',
+      primary200: '#fce7f3',
+      primary300: '#fbcfe8',
+      secondary100: '#fdf2f8',
+      secondary200: '#fce7f3',
+      accent100: '#f3e8ff',
+      accent200: '#e9d5ff',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(236, 72, 153, 0.1)',
+      md: '0 4px 16px rgba(236, 72, 153, 0.15)',
+      lg: '0 8px 32px rgba(236, 72, 153, 0.2)',
+      xl: '0 16px 64px rgba(236, 72, 153, 0.25)',
+    },
+  },
+  {
+    id: 'lime-green',
+    name: 'Lime Fresh',
+    colors: {
+      primary: '#65a30d',
+      secondary: '#84cc16',
+      accent: '#f59e0b',
+      background: '#ffffff',
+      surface: '#ffffff',
+      text: '#1f2937',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      primary100: '#f7fee7',
+      primary200: '#ecfccb',
+      primary300: '#d9f99d',
+      secondary100: '#f7fee7',
+      secondary200: '#ecfccb',
+      accent100: '#fffbeb',
+      accent200: '#fef3c7',
+    },
+    fonts: { primary: 'Inter', secondary: 'Poppins', accent: 'Inter' },
+    shadows: {
+      sm: '0 2px 8px rgba(101, 163, 13, 0.1)',
+      md: '0 4px 16px rgba(101, 163, 13, 0.15)',
+      lg: '0 8px 32px rgba(101, 163, 13, 0.2)',
+      xl: '0 16px 64px rgba(101, 163, 13, 0.25)',
+    },
+  },
 ];
 
 // Expanded Font Collections
@@ -407,18 +624,23 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     link.setAttribute('data-website-fonts', 'true');
     document.head.appendChild(link);
 
+    console.log('🎨 Theme applied:', currentTheme.name, currentTheme.colors);
   }, [currentTheme]);
 
   const updateTheme = (themeId: string) => {
     const theme = colorCollections.find(t => t.id === themeId);
     if (theme) {
+      console.log('🔄 Updating theme to:', theme.name, theme.colors);
       setCurrentTheme(theme);
+    } else {
+      console.warn('⚠️ Theme not found:', themeId);
     }
   };
 
   const updateFonts = (fontCollectionId: string) => {
     const fontCollection = fontCollections.find(f => f.id === fontCollectionId);
     if (fontCollection) {
+      console.log('🔤 Updating fonts to:', fontCollection.name);
       setCurrentTheme(prev => ({
         ...prev,
         fonts: {
@@ -426,10 +648,13 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           ...fontCollection.fonts
         }
       }));
+    } else {
+      console.warn('⚠️ Font collection not found:', fontCollectionId);
     }
   };
 
   const applyCustomColors = (colors: Partial<ThemeConfig['colors']>) => {
+    console.log('🎨 Applying custom colors:', colors);
     setCurrentTheme(prev => ({
       ...prev,
       colors: { ...prev.colors, ...colors }
